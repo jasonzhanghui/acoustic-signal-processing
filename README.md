@@ -1,4 +1,5 @@
 # Acoustic Signal Processing
-This is a repository that contains the acoustic signal processing codes  
-The acoustic signal is acquired from a fiber optic hydrophone  
-The codes filter and make calculations out of the signal  
+声学信号处理  
+本仓库中的代码是对于光纤水听器获取的声信号进行滤波和参数解算
+acoustic文件夹下为声信号处理代码
+spectrum文件夹下为F-P干涉光谱信号解调代码
