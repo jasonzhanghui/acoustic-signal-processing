@@ -1,18 +1,18 @@
-%******************************Ç»³¤½âµ÷******************************%
+%******************************è…”é•¿è§£è°ƒ******************************%
 clc;clear;
 format short;
-% Â·¾¶2:Ó²ÅÌÖĞ´æ´¢Êı¾İµÄÂ·¾¶
-dir2 = 'D:\Jason\Study\Postgraduate Projects\¹âÏË³¬Éù\¿É¿ØÌ½Í·ÖÆ×÷\100Î¢Ã×Ì½Í·\Ì½Í·2-13\';
-% dir2 = 'D:\Jason\Study\Postgraduate Projects\¹âÏË³¬Éù\¿É¿ØÌ½Í·ÖÆ×÷\0Î¢Ã×Ì½Í·\Ö±½ÓĞıÍ¿Ì½Í·';
-% Èç¹û²»´æÔÚÔò´´½¨¸ÃÂ·¾¶
+% è·¯å¾„2:ç¡¬ç›˜ä¸­å­˜å‚¨æ•°æ®çš„è·¯å¾„
+dir2 = 'D:\Jason\Study\Postgraduate Projects\å…‰çº¤è¶…å£°\å¯æ§æ¢å¤´åˆ¶ä½œ\100å¾®ç±³æ¢å¤´\æ¢å¤´2-13\';
+% dir2 = 'D:\Jason\Study\Postgraduate Projects\å…‰çº¤è¶…å£°\å¯æ§æ¢å¤´åˆ¶ä½œ\0å¾®ç±³æ¢å¤´\ç›´æ¥æ—‹æ¶‚æ¢å¤´';
+% å¦‚æœä¸å­˜åœ¨åˆ™åˆ›å»ºè¯¥è·¯å¾„
 if ~exist(dir2,'dir')
     mkdir(dir2);
 end
-% ¸ÃÂ·¾¶ÖĞµÄcsvÎÄ¼şÁĞ±í
+% è¯¥è·¯å¾„ä¸­çš„csvæ–‡ä»¶åˆ—è¡¨
 filelist2 = ls([dir2,'\*.csv']);
-% ¶ÁÈ¡UÅÌÖĞµÄÎÄ¼şÁĞ±í£¬Èç¹ûÄ³¸öcsv²»°üº¬ÓÚÉÏÃæÎÄ¼ş¼Ğ£¬Ôò¸´ÖÆµ½ÉÏÃæÎÄ¼ş¼Ğ
+% è¯»å–Uç›˜ä¸­çš„æ–‡ä»¶åˆ—è¡¨ï¼Œå¦‚æœæŸä¸ªcsvä¸åŒ…å«äºä¸Šé¢æ–‡ä»¶å¤¹ï¼Œåˆ™å¤åˆ¶åˆ°ä¸Šé¢æ–‡ä»¶å¤¹
 if exist('I:\','dir')
-    dir1 = 'I:\';       % Â·¾¶1:UÅÌ
+    dir1 = 'I:\';       % è·¯å¾„1:Uç›˜
     filelist1 = ls([dir1,'*.csv']);
     idx = ismember(filelist1,filelist2,'rows');
     for i = 1:size(filelist1,1)
@@ -26,43 +26,43 @@ N = size(filelist2,1);
 for i = 1:N
     data(:,:,i) = csvread([dir2,'\',filelist2(i,:)],30);
 end
-% ³õÊ¼»¯´æ´¢²¨·å£¬²¨¹È£¬¸ÉÉæ¼¶´ÎµÈ²ÎÊıµÄ±äÁ¿
+% åˆå§‹åŒ–å­˜å‚¨æ³¢å³°ï¼Œæ³¢è°·ï¼Œå¹²æ¶‰çº§æ¬¡ç­‰å‚æ•°çš„å˜é‡
 init = @(m) zeros(N,m);
 troughWL = init(2);
 L = init(1);    % peakWL = init(1); m = init(1);  R1 = init(1); R2 = init(1); n1 = init(1); n2 = init(1);
 for i=1:N
-    wavelength = data(:,1,i);   %²¨³¤
+    wavelength = data(:,1,i);   %æ³¢é•¿
     % y=10.^(A(:,2,i)./10);
-    intensity = smooth(data(:,2,i),200,'lowess');   %¹âÇ¿
+    intensity = smooth(data(:,2,i),200,'lowess');   %å…‰å¼º
     plot(wavelength,intensity,'linewidth',2);hold on;
 
-    % ********************µ¥Ë«·å½âµ÷Ç»³¤************************%
-    % Ñ°ÕÒ²¨¹ÈËù¶ÔÓ¦µÄ²¨³¤
+    % ********************å•åŒå³°è§£è°ƒè…”é•¿************************%
+    % å¯»æ‰¾æ³¢è°·æ‰€å¯¹åº”çš„æ³¢é•¿
     [troughs,locs] = findpeaks(-intensity,wavelength);
     troughWL(i,:) = mink(locs',2);
     trough = -troughs(1);
     w1 = troughWL(i,1);
     w2 = troughWL(i,2);
-    % ¼ÆËã¸ÉÉæ¼¶´Î
+    % è®¡ç®—å¹²æ¶‰çº§æ¬¡
     m(i) = round(w1./(w2-w1));
-    % ¼ÆËãÇ»³¤
+    % è®¡ç®—è…”é•¿
     L(i) = m(i).*w2./2./1000;
-    % m_min(i)=round((wmin(1,i)./(wmin(2,i)-wmin(1,i)))); %È·¶¨¸ÉÉæ¼¶´Îm
-    % L_min(i)=m_min(i).*wmin(2,i)./2000;                 %ÇóÇ»³¤
-    % text(wmin(1,i),y(tmin(1,i)+n(1)-1),'¡ø','color',color,'HorizontalAlignment','center');
-    % ¶¨Òå²¨·åËùÔÚÇø¼äÇó·´ÉäÂÊ
+    % m_min(i)=round((wmin(1,i)./(wmin(2,i)-wmin(1,i)))); %ç¡®å®šå¹²æ¶‰çº§æ¬¡m
+    % L_min(i)=m_min(i).*wmin(2,i)./2000;                 %æ±‚è…”é•¿
+    % text(wmin(1,i),y(tmin(1,i)+n(1)-1),'â–²','color',color,'HorizontalAlignment','center');
+    % å®šä¹‰æ³¢å³°æ‰€åœ¨åŒºé—´æ±‚åå°„ç‡
     
-%     % Çó²¨·åµÄ´óĞ¡¼°Î»ÖÃ
+%     % æ±‚æ³¢å³°çš„å¤§å°åŠä½ç½®
 %     [pks,locs] = findpeaks(intensity,wavelength);
-%     % Çó³öÈô¸É¸ö²¨·åÎ»ÖÃ£¬È¡µÚÒ»¸ö
+%     % æ±‚å‡ºè‹¥å¹²ä¸ªæ³¢å³°ä½ç½®ï¼Œå–ç¬¬ä¸€ä¸ª
 %     peakWL(i) = min(locs);
 %     peak = pks(1);
 %     a = w1.*L(i)./37714.8;
 %     coff = (4+4.*a.^2)./((2+a.^2).^2);
-%     % ¼ÆËã·´ÉäÂÊ
+%     % è®¡ç®—åå°„ç‡
 %     R1(i) = (((sqrt(peak)+sqrt(trough))/2).^2);
 %     R2(i) = (((sqrt(peak)-sqrt(trough))/2).^2)/coff;
-%     % ¼ÆËãÕÛÉäÂÊ
+%     % è®¡ç®—æŠ˜å°„ç‡
 %     n1(i) = (sqrt(R1(i))+1)./(1-sqrt(R1(i)))*1.4682;
 %     n2(i) = (sqrt(R2(i))+1)./(1-sqrt(R2(i)))*1;
 end
